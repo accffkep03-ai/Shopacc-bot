@@ -1,33 +1,24 @@
 import os
+import threading
 from flask import Flask
-from threading import Thread
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import ApplicationBuilder, CommandHandler
 
-app = Flask('')
+app = Flask(__name__)
+TOKEN = os.environ.get("TOKEN")
 
 @app.route('/')
 def home():
     return "Bot is alive!"
 
-def run():
-  app.run(host='0.0.0.0',port=int(os.environ.get('PORT', 10000)))
+async def start(update, context):
+    await update.message.reply_text("Bot chạy rồi nè bro")
 
-def keep_alive():
-    t = Thread(target=run)
-    t.start()
+def run_bot():
+    application = ApplicationBuilder().token(TOKEN).build()
+    application.add_handler(CommandHandler("start", start))
+    print("Bot is alive!")
+    application.run_polling()
 
-keep_alive()
-
-TOKEN = os.environ.get("TOKEN")
-
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("ShopAcc Bot đã hoạt động! /menu")
-
-async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("/sodu - Xem số dư\n/nap - Nạp tiền")
-
-async def sodu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    uid = update.effective_user.id
-    await update.message.reply_text(f"ID: {uid}\nSố dư: 0đ")
-
+if __name__ == '__main__':
+    threading.Thread(target=run_bot).start()
+    app.run(host='0.0.0.0', port=10000)
