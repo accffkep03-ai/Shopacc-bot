@@ -16,7 +16,7 @@ async def start(update, context):
 def run_bot():
     application = ApplicationBuilder().token(TOKEN).build()
     application.add_handler(CommandHandler("start", start))
-    print("Bot is alive!")
+    print("Bot is alive!")  # Dòng này để check bot có chạy không
     application.run_polling()
 
 if __name__ == '__main__':
