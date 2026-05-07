@@ -1,4 +1,4 @@
-import os, logging, threading
+import os, logging, threading, asyncio
 from flask import Flask
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
@@ -15,6 +15,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Bot chạy rồi nè bro ✅")
 
 def run_bot():
+    asyncio.set_event_loop(asyncio.new_event_loop()) # Dòng fix lỗi
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     print("Bot is alive!")
