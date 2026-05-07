@@ -15,13 +15,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Bot chạy rồi nè bro ✅")
 
 def run_bot():
-    try:
-        app = ApplicationBuilder().token(TOKEN).build()
-        app.add_handler(CommandHandler("start", start))
-        print("Bot is alive!")
-        app.run_polling()
-    except Exception as e:
-        print(f"LỖI BOT CHÍNH: {e}")
+    app = ApplicationBuilder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+    print("Bot is alive!")
+    app.run_polling()
 
 if __name__ == '__main__':
     threading.Thread(target=run_bot).start()
